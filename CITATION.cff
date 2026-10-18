@@ -1,0 +1,14 @@
+cff-version: 1.2.0
+message: "If you use PocketNet, please cite it."
+title: "PocketNet"
+version: 0.2.0
+date-released: 2026-10-19
+license: MIT
+repository-code: "https://github.com/precisionmatics/pocketnet"
+authors:
+  - family-names: Arulsamy
+    given-names: Stalin
+    affiliation: "Lovely Professional University, Phagwara, Punjab, India"
+  - family-names: Natarajan
+    given-names: Kiruthiga
+    affiliation: "KMCH College of Pharmacy, Coimbatore, Tamil Nadu, India"
