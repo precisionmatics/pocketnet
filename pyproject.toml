@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pocketnet"
+version = "0.1.0"
+description = "Ligand-binding pocket prediction from protein structures with a message-passing / attention-pooling network (five-model ensemble, weights included)."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Stalin Arulsamy" }, { name = "Kiruthiga Natarajan" }]
+keywords = ["binding site prediction", "drug discovery", "protein structure", "graph neural network", "bioinformatics"]
+classifiers = [
+  "Development Status :: 4 - Beta", "Intended Audience :: Science/Research", "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3", "Topic :: Scientific/Engineering :: Bio-Informatics", "Topic :: Scientific/Engineering :: Chemistry",
+]
+dependencies = ["numpy>=1.23", "scipy>=1.9", "torch>=2.0"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[project.scripts]
+pocketnet = "pocketnet.cli:main"
+
+[tool.setuptools]
+packages = ["pocketnet"]
+
+[tool.setuptools.package-data]
+pocketnet = ["weights/*.pt", "calibration.json"]
