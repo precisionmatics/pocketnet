@@ -17,6 +17,10 @@ classifiers = [
 ]
 dependencies = ["numpy>=1.23", "scipy>=1.9", "torch>=2.0"]
 
+[project.urls]
+Homepage = "https://github.com/precisionmatics/pocketnet"
+Issues = "https://github.com/precisionmatics/pocketnet/issues"
+
 [project.optional-dependencies]
 test = ["pytest"]
 
