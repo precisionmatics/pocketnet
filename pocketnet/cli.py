@@ -4,7 +4,7 @@ import argparse, logging, sys
 from pathlib import Path
 from . import __version__
 
-FORMATS = ("csv", "json", "pdb", "pml", "cxc")
+FORMATS = ("csv", "json", "pdb", "pml", "cxc", "sdf")
 
 
 def _expand(items):
@@ -41,6 +41,18 @@ def _fetch(a) -> int:
     return 0
 
 
+def _view(a) -> int:
+    from .api import PocketPredictor
+    logging.basicConfig(level=logging.INFO, format="%(message)s")
+    pred = PocketPredictor(a.device)
+    chains = [c for c in a.chains.split(",") if c] if a.chains else None
+    res = pred.predict(a.input, chains=chains, max_pockets=a.max_pockets)
+    if not a.quiet: print(res)
+    html_path = res.view(open_browser=not a.no_browser)
+    print(f"  -> viewer: {html_path}")
+    return 0
+
+
 def _info(a) -> int:
     import torch
     from .api import WEIGHTS
@@ -59,6 +71,14 @@ def main(argv=None) -> int:
     p.add_argument("--max-pockets", type=int, default=10); p.add_argument("--formats", default=",".join(FORMATS), help=f"comma-separated subset of {', '.join(FORMATS)}")
     p.add_argument("--top-fraction-q", type=float, default=None, help="advanced: quantile threshold for surface points (default 0.97)"); p.add_argument("-q", "--quiet", action="store_true")
     p.set_defaults(fn=_predict)
+    v = sub.add_parser("view", help="predict pockets and open an interactive browser viewer")
+    v.add_argument("input", help="PDB/mmCIF file, PDB identifier (e.g. 3POZ) or UniProt accession")
+    v.add_argument("--device", choices=["cpu", "cuda"], default=None)
+    v.add_argument("--chains", default="", help="comma-separated chain IDs to keep")
+    v.add_argument("--max-pockets", type=int, default=10)
+    v.add_argument("--no-browser", action="store_true", help="write HTML but do not open browser")
+    v.add_argument("-q", "--quiet", action="store_true")
+    v.set_defaults(fn=_view)
     f = sub.add_parser("fetch", help="download structures from the PDB or AlphaFold DB"); f.add_argument("ids", nargs="+"); f.add_argument("-o", "--out", default="."); f.add_argument("--format", choices=["pdb", "cif"], default="pdb"); f.set_defaults(fn=_fetch)
     i = sub.add_parser("info", help="show version, device and bundled models"); i.set_defaults(fn=_info)
     a = ap.parse_args(argv); return a.fn(a)

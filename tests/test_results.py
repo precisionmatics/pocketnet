@@ -5,10 +5,12 @@ from pocketnet.structure import read_structure
 
 def test_exports(result, tmp_path):
     files = result.save(tmp_path, "t")
-    assert set(files) == {"t_pocketnet.pdb", "t_pockets.csv", "t_pockets.json", "t_pockets.pml", "t_pockets.cxc"}
+    assert set(files) == {"t_pocketnet.pdb", "t_pockets.csv", "t_pockets.json", "t_pockets.pml", "t_pockets.cxc", "t_pockets.sdf"}
     assert all((tmp_path / f).stat().st_size > 0 for f in files)
     d = json.loads((tmp_path / "t_pockets.json").read_text()); assert len(d["pockets"]) == len(result)
-    assert (tmp_path / "t_pockets.csv").read_text().splitlines()[0].startswith("rank,score,probability")
+    csv_header = (tmp_path / "t_pockets.csv").read_text().splitlines()[0]
+    assert csv_header.startswith("rank,score,probability") and "is_druggable" in csv_header and "volume_A3" in csv_header
+    sdf = (tmp_path / "t_pockets.sdf").read_text(); assert "RANK" in sdf and "PROBABILITY" in sdf and "$$$$" in sdf
 
 
 def test_bfactor_pdb_roundtrip(result, tmp_path):

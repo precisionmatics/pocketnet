@@ -5,7 +5,7 @@
 >>> print(result)
 >>> result.save("out/")                                # CSV, JSON, B-factor PDB, PyMOL and ChimeraX scripts
 """
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 from .api import PocketPredictor, predict, resolve                       # noqa: E402,F401
 from .results import Pocket, PredictionResult                            # noqa: E402,F401
 from .structure import Structure, read_structure, fetch_pdb, fetch_alphafold   # noqa: E402,F401

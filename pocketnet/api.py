@@ -63,6 +63,9 @@ class PocketPredictor:
 
     def __repr__(self) -> str: return f"PocketPredictor(models={len(self.models)}, device={self.device!r}, params={self.params})"
 
+    def __enter__(self) -> "PocketPredictor": return self
+    def __exit__(self, *_): pass    # weights stay loaded; GPU memory freed at garbage collection
+
     @torch.no_grad()
     def score_points(self, structure, chains: Optional[Sequence[str]] = None):
         """Return ``(points [P, 3], ensemble score [P], Structure)``."""
@@ -96,6 +99,22 @@ class PocketPredictor:
                               center=[round(float(v), 3) for v in ctr], n_points=int(len(c["idx"])), residues=sorted(res, key=_res_sort), point_indices=[int(i) for i in c["idx"]]))
         src = st.source if st.source != "<text>" else ""
         return PredictionResult(out, pts, s, st, src)
+
+    def residue_scores_df(self, result: PredictionResult):
+        """Return a :class:`pandas.DataFrame` of per-residue ligandability scores.
+
+        Columns: ``residue`` (chain:number), ``score``, ``pocket_rank`` (rank of the highest-scoring pocket
+        that lists the residue, or 0), ``probability`` (probability of that pocket).
+        """
+        import pandas as pd
+        rs = result.residue_scores
+        res_to_pocket: dict[str, tuple[int, float]] = {}
+        for p in reversed(result.pockets):
+            for r in p.residues:
+                res_to_pocket[r] = (p.rank, p.probability)
+        rows = [{"residue": k, "score": v, "pocket_rank": res_to_pocket.get(k, (0, 0.0))[0],
+                 "probability": res_to_pocket.get(k, (0, 0.0))[1]} for k, v in rs.items()]
+        return pd.DataFrame(rows).sort_values("score", ascending=False).reset_index(drop=True)
 
     def predict_many(self, structures: Iterable, **kw) -> Iterator[tuple[str, Optional[PredictionResult], Optional[Exception]]]:
         """Predict a series of structures; yields ``(name, result, error)`` and continues after a failure."""
