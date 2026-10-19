@@ -96,7 +96,6 @@ on sequence-identity-filtered subsets of HOLO4K and COACH420 (primary unseen set
 | DeepPocket | 56.6 | 64.6 | 71.5 |
 | PUResNet | 39.0 | 39.2 | 39.2 |
 | fpocket | 33.3 | 42.0 | 49.2 |
-| Kalasanty | 33.3 | 34.0 | 34.0 |
 
 **COACH420 — 49 proteins, 60 ligands (primary unseen)**
 
@@ -106,13 +105,11 @@ on sequence-identity-filtered subsets of HOLO4K and COACH420 (primary unseen set
 | P2Rank | 70.0 | 71.7 | 73.3 |
 | DeepPocket | 60.0 | 73.3 | 80.0 |
 | PUResNet | 53.3 | 53.3 | 53.3 |
-| Kalasanty | 60.0 | 60.0 | 60.0 |
 | fpocket | 35.0 | 48.3 | 70.0 |
 
 v0.3 bundles the **rot5 ensemble**: rotation-augmented models for folds 0–1, standard v3 models for folds 2–4.
 Seed variance across three training seeds: ±1–2 pp on HOLO4K (top-n), confirming stability.
 
-Limitations: VN-EGNN, EquiPocket, DeepSurf not benchmarked (no released weights).
 Trained on PLAS-20k (simulation-derived complexes); performance on membrane proteins,
 large assemblies and cryptic sites is not yet characterised.
 Ligands, ions and nucleic acids in the input are ignored.
