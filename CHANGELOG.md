@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.2
+* Bumped `requires-python` to `>=3.10` to match PyTorch's current support window (torch 2.9+ requires Python 3.10+).
+* Updated CI matrix to Python 3.10, 3.11, 3.12.
+
 ## 0.3.1
 * Added LIGYSIS benchmark results to README: MD-trained model (v0.3) achieves 57.7 % top-n+2 recall (#1 standalone); crystal-trained variant with HOLO4K-tuned extraction reaches 62.3 % (#1 overall including fpocket pipelines).
 * Updated CITATION.cff version and date.

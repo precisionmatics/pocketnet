@@ -4,10 +4,10 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "pocketnet"
-version = "0.3.1"
+version = "0.3.2"
 description = "Ligand-binding pocket prediction from protein structures with a message-passing / attention-pooling network (five-model ensemble, weights included)."
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "Stalin Arulsamy" }, { name = "Kiruthiga Natarajan" }]
 keywords = ["binding site prediction", "drug discovery", "protein structure", "graph neural network", "bioinformatics"]
