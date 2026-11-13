@@ -82,16 +82,14 @@ for name, result, err in pred.predict_many(["3POZ", "2HHB", "bad_id"]):
 
 ## Performance
 
-Evaluated using a 4 Å distance-to-any-ligand-atom criterion, at most 10 pockets per method,
-on sequence-identity-filtered subsets of HOLO4K and COACH420 (primary unseen set: < 30 % identity,
-≥ 40 % coverage to every training chain).  Numbers are top-*n* / top-*n*+2 / top-10 success rates
-(% of ligands found); bootstrap 95 % CIs and McNemar tests are in the manuscript.
+**HOLO4K — 415 proteins, 931 ligands (< 30 % sequence identity to training)**
 
-**HOLO4K — 415 proteins, 931 ligands (primary unseen)**
+Evaluated at 4 Å distance-to-ligand-atom, up to 10 pockets per method.
+Numbers are top-*n* / top-*n*+2 / top-10 (% ligands found).
 
 | Method | top-*n* | top-*n*+2 | top-10 |
 |---|---|---|---|
-| **PocketNet (v0.3, rot5 ensemble)** | **71.1** | **82.9** | **91.0** |
+| **PocketNet (v0.3)** | **71.1** | **82.9** | **91.0** |
 | P2Rank | 67.5 | 73.0 | 75.6 |
 | DeepPocket | 56.6 | 64.6 | 71.5 |
 | PUResNet | 39.0 | 39.2 | 39.2 |
@@ -101,14 +99,29 @@ on sequence-identity-filtered subsets of HOLO4K and COACH420 (primary unseen set
 
 | Method | top-*n* | top-*n*+2 | top-10 |
 |---|---|---|---|
-| **PocketNet (v0.3, rot5 ensemble)** | **71.7** | **80.0** | **85.0** |
+| **PocketNet (v0.3)** | **71.7** | **80.0** | **85.0** |
 | P2Rank | 70.0 | 71.7 | 73.3 |
 | DeepPocket | 60.0 | 73.3 | 80.0 |
 | PUResNet | 53.3 | 53.3 | 53.3 |
 | fpocket | 35.0 | 48.3 | 70.0 |
 
-v0.3 bundles the **rot5 ensemble**: rotation-augmented models for folds 0–1, standard v3 models for folds 2–4.
-Seed variance across three training seeds: ±1–2 pp on HOLO4K (top-n), confirming stability.
+**LIGYSIS — 2,775 chains, 6,721 reference sites (Utgés & Barton 2024)**
+
+Evaluated at 12 Å distance-to-centroid, top-*n*+2 recall, fixed denominator.
+
+| Method | top-*n*+2 | Notes |
+|---|---|---|
+| **PocketNet (crystal-trained, tuned extraction)** | **62.3 %** | #1 overall |
+| fpocket+PRANK | 60.4 % | fpocket re-scoring |
+| fpocket+PRANK+Cons | 60.1 % | fpocket re-scoring |
+| DeepPocket-Rescored | 58.1 % | fpocket re-scoring |
+| **PocketNet (v0.3, MD-trained)** | **57.7 %** | **#1 standalone** |
+| P2Rank+Cons | 53.9 % | standalone |
+| P2Rank | 51.9 % | standalone |
+| GrASP | 49.9 % | standalone |
+
+The crystal-trained result uses extraction parameters tuned on 415 unseen HOLO4K proteins
+(never on LIGYSIS data). The v0.3 package ships the MD-trained weights.
 
 Trained on PLAS-20k (simulation-derived complexes); performance on membrane proteins,
 large assemblies and cryptic sites is not yet characterised.

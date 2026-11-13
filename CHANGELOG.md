@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+* Added LIGYSIS benchmark results to README: MD-trained model (v0.3) achieves 57.7 % top-n+2 recall (#1 standalone); crystal-trained variant with HOLO4K-tuned extraction reaches 62.3 % (#1 overall including fpocket pipelines).
+* Updated CITATION.cff version and date.
+
 ## 0.2.0
 * New `PredictionResult` and `Pocket` objects (dictionary-style access from 0.1 still works) with per-residue scores and the surface points.
 * Exporters: CSV, JSON, B-factor PDB, PyMOL and ChimeraX scripts, pandas DataFrame.
